@@ -1,0 +1,134 @@
+#:import rgba kivy.utils.get_color_from_hex
+<ContentP>:
+    orientation: 'vertical'
+    spacing: '12dp'
+    size_hint_y: None
+    height: '60dp'
+
+    MDTextField:
+        id: chatPassphrase
+        hint_text: 'Passphrase'
+        password: True
+        required: True
+
+<ContentInfo>:
+    orientation: 'vertical'
+    spacing: '12dp'
+    size_hint_y: None
+    height: '220dp'
+
+    MDLabel:
+        id: roomname
+        text: ''
+
+    MDLabel:
+        text: ' '
+
+    MDLabel:
+        id: roomuuid
+        text: ''
+
+    MDLabel:
+        text: ' '
+    MDLabel:
+        text: ' '
+
+    MDLabel:
+        id: roomsalt
+        text: ''
+
+
+<ChatScreen>:
+    name: "chat"
+    chat_layout: chat_layout
+    on_enter:
+        root.update()
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            adaptive_height: True
+            width: self.width
+
+            MDIconButton:
+                id: backbutton
+                icon: "arrow-left"
+                pos_hint: {"center_x": .1, "center_y": .5}
+                on_release:
+                    root.go_back()
+
+            MDBoxLayout:
+                width: 100
+
+            MDSwitch:
+                id: dbswitch
+                active: True if root.keepMsg else False
+                on_active:
+                    root.on_switch_active(*args)
+
+            MDIconButton:
+                id: dotsbutton
+                icon: "dots-vertical"
+                pos_hint: {"center_x": .9, "center_y": .5}
+                on_release:
+                    root.room_info()
+
+        MDBoxLayout:
+            ScrollView:
+                id: scroll
+                BoxLayout:
+                    orientation: 'vertical'
+                    id: chat_layout
+                    padding: 15
+                    spacing: 15
+                    size_hint: 1, None
+                    height: self.minimum_height
+
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            adaptive_height: True
+            width: self.width
+            md_bg_color: app.theme_cls.primary_color
+            radius: [25, 25, 0, 0]
+
+            MDIconButton:
+                id: gallerybutton
+                icon: "image-plus"
+                pos_hint: {"center_x": .1, "center_y": .5}
+                on_release:
+                    root.file_manager()
+
+            MDTextField:
+                id: chatbox
+                hint_text: "Message..."
+                line_color_focus: "white"
+                text_color_focus: "white"
+                hint_text_color_focus: "white"
+                pos_hint: {"center_x": .1, "center_y": .5}
+
+            MDIconButton:
+                id: sendbutton
+                icon: "send"
+                pos_hint: {"center_x": .1, "center_y": .5}
+                on_release:
+                    root.start_send_message_thread()
+
+
+<Slabel>:
+    size_hint: None, None
+    size: self.texture_size
+    padding: 10, 10
+    multiline: True
+    background_color: 0,0,0,0
+    background_normal: ""
+    back_color: 1,0,1,1
+    border_radius: [6]
+    canvas.before:
+        Color:
+            rgba: rgba("#673ab7")
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos

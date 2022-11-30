@@ -1,0 +1,108 @@
+<ContentGroup>:
+    rows: 5
+    adaptive_height: True
+
+    MDTextField:
+        opacity: 0
+        disabled: True
+        required: False
+
+    MDTextField:
+        id: groupCreationName
+        required: True
+        hint_text: 'Name'
+        adaptive_height: True
+
+    MDGridLayout:
+        rows: 1
+        cols: 2
+        adaptive_height: True
+
+        MDLabel:
+            text: 'Group already exists?'
+
+        MDCheckbox:
+            id: groupcheckbox
+            active: False
+            on_active: app.get_running_app().root.get_screen('home').on_checkbox_active(*args)
+
+    MDTextField:
+        id: groupCreationUUID
+        hint_text: 'Group UUID'
+        opacity: 0
+        disabled: True
+        required: False
+        adaptive_height: True
+
+    MDTextField:
+        id: groupCreationSalt
+        hint_text: 'Group salt'
+        opacity: 0
+        disabled: True
+        required: False
+        adaptive_height: True
+
+<ContentContact>:
+    orientation: 'vertical'
+    spacing: '12dp'
+    size_hint_y: None
+    height: '120dp'
+
+    MDTextField:
+        id: contactCreationName
+        hint_text: 'Name'
+
+    MDTextField:
+        id: contactCreationUUID
+        hint_text: 'User UUID'
+
+<HomeScreen>:
+    on_enter:
+        root.update()
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            id: toolbar
+            title: 'Groups'
+            right_action_items: [['chat-plus', lambda x: root.create_chatroom()],['account-plus', lambda x: root.create_contact()]]
+
+        MDBottomNavigation:
+            id: botNav
+            MDBottomNavigationItem:
+                name: 'screen 1'
+                text: 'Groups'
+                icon: 'chat-processing'
+                on_tab_release:
+                    root.ids.toolbar.title = 'Groups'
+
+                ScrollView:
+                    MDList:
+                        id: chatroomListWidget
+
+
+            MDBottomNavigationItem:
+                name: 'screen 2'
+                text: 'Contacts'
+                icon: 'account-box'
+                on_tab_release:
+                    root.ids.toolbar.title = 'Contacts'
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    adaptive_height: True
+                    md_bg_color: app.theme_cls.primary_color
+
+                    MDLabel:
+                        text: 'Your contact UUID is'
+                        halign: 'center'
+
+                    MDLabel:
+                        id: currentUserUUID
+                        halign: 'center'
+
+
+                ScrollView:
+                    MDList:
+                        id: contactListWidget
